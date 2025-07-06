@@ -87,7 +87,7 @@ export default function SignupPage() {
               </div>
             </CardContent>
             <CardFooter className="flex flex-col space-y-4">
-              <Button type="submit" className="w-full">{isLoading ? <Loader2 className="animatete-spin" /> : 'Create account'}</Button>
+              <Button type="submit" className="w-full">{isLoading ? <Loader2 className="animate-spin" /> : 'Create account'}</Button>
               <div className="text-center text-sm">
                 Already have an account?{" "}
                 <Link href="/login" className="text-blue-600 hover:text-blue-500 font-medium">
