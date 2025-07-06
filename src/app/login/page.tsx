@@ -4,14 +4,18 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import Link from "next/link"
-import React from "react"
+import React, { useState } from "react"
 import { toast } from "sonner"
-import { json } from "stream/consumers"
+import { useRouter } from "next/navigation"
+import { Loader2 } from "lucide-react"
 
 export default function LoginPage() {
-
+  const [isLoading, setIsLoading] = useState(false)
+  const router = useRouter()
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
+    
     event.preventDefault()
+    setIsLoading(true)
     const formData = new FormData(event.target)
     const data = Object.fromEntries(formData.entries())
 
@@ -25,10 +29,11 @@ export default function LoginPage() {
 
     if (!res.ok) {
       toast.error('invalid email or password')
+      setIsLoading(false)
       return
     }
-
-    toast.info('login successfull')
+      setIsLoading(false)
+    router.replace('/dashboard')
 
   }
   return (
@@ -65,7 +70,7 @@ export default function LoginPage() {
               </div>
             </CardContent>
             <CardFooter className="flex flex-col space-y-4">
-              <Button type="submit" className="w-full">Sign in</Button>
+              <Button type="submit" className="w-full">{isLoading ? <Loader2 className={'animate-spinner'}/> : 'Sign in'}</Button>
               <div className="text-center text-sm">
                 {"Don't have an account? "}
                 <Link href="/signup" className="text-blue-600 hover:text-blue-500 font-medium">

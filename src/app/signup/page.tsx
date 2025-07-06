@@ -7,10 +7,13 @@ import Link from "next/link"
 import { useState } from "react"
 import { toast } from "sonner"
 import { Loader2 } from "lucide-react"
+import { useRouter } from "next/navigation"
 
 
 
 export default function SignupPage() {
+
+  const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -37,6 +40,7 @@ export default function SignupPage() {
     }
     setIsLoading(false)
     toast.info('account created successfull! you can now login')
+    router.push('/login')
   }
 
   return (

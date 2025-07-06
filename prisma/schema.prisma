@@ -21,4 +21,16 @@ model Users{
   password String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  posts Posts[]
+}
+
+model Posts{
+  id String @id @default(uuid())
+  thumbnail String
+  title String
+  description String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  authorId String
+  author Users @relation(fields: [authorId],references: [id])
 }
