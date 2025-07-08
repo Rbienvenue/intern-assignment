@@ -83,8 +83,8 @@ export function AdminSidebar() {
                 </SidebarGroup>
             </SidebarContent>
 
-            <SidebarFooter className="p-4">
-                <Button variant="outline" className="w-full justify-start bg-transparent" onClick={handleLogout}>
+            <SidebarFooter className="p-4 my-6">
+                <Button variant="outline" className="w-full justify-start bg-transparent cursor-pointer" onClick={handleLogout}>
                     <LogOut className="h-4 w-4 mr-2" />
                     Logout
                 </Button>

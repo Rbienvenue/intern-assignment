@@ -4,46 +4,23 @@ import { useState } from "react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { PostCard } from "./post-card"
+import { UploadCard } from "./upload-card"
 import { Search, Grid, List, FileText } from "lucide-react"
+import { Users, Uploads } from "@prisma/client";
 
-interface Post {
-  id: string
-  thumbnail: string
-  title: string
-  description: string
-  createdAt: Date
-  updatedAt: Date
-  authorId: string
-  author: {
-    id: string
-    firstName: string
-    lastName: string
-    email: string
-  }
+interface UploadsGridProps {
+  uploads: Array<Uploads & {owner: Users}>
 }
 
-interface Author {
-  id: string
-  firstName: string
-  lastName: string
-  email: string
-}
-
-interface PostsGridProps {
-  posts: Post[]
-}
-
-export function PostsGrid({ posts }: PostsGridProps) {
+export function UploadsGrid({uploads}: UploadsGridProps) {
   const [searchTerm, setSearchTerm] = useState("")
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
 
-  // Filter posts based on search term
-  const filteredPosts = posts.filter(
-    (post) =>
-      post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      post.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      `${post.author.firstName} ${post.author.lastName}`.toLowerCase().includes(searchTerm.toLowerCase()),
+  // Filter Uploads based on search term
+  const filteredUploads = uploads.filter(
+    (upload) =>
+      upload.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      `${upload.owner.firstName} ${upload.owner.lastName}`.toLowerCase().includes(searchTerm.toLowerCase()),
   )
 
   return (
@@ -53,7 +30,7 @@ export function PostsGrid({ posts }: PostsGridProps) {
         <div className="relative flex-1 max-w-sm">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
           <Input
-            placeholder="Search posts..."
+            placeholder="Search Uploads..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="pl-10"
@@ -61,7 +38,7 @@ export function PostsGrid({ posts }: PostsGridProps) {
         </div>
 
         <div className="flex items-center gap-2">
-          <Badge variant="secondary">{filteredPosts.length} posts</Badge>
+          <Badge variant="secondary">{filteredUploads.length} Uploads</Badge>
           <div className="flex border rounded-lg">
             <Button
               variant={viewMode === "grid" ? "default" : "ghost"}
@@ -83,13 +60,13 @@ export function PostsGrid({ posts }: PostsGridProps) {
         </div>
       </div>
 
-      {/* Posts Display */}
-      {filteredPosts.length === 0 ? (
+      {/* Uploads Display */}
+      {filteredUploads.length === 0 ? (
         <div className="text-center py-12">
           <FileText className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-          <h3 className="text-lg font-medium text-gray-900 mb-2">{searchTerm ? "No posts found" : "No posts yet"}</h3>
+          <h3 className="text-lg font-medium text-gray-900 mb-2">{searchTerm ? "No Uploads found" : "No Uploads yet"}</h3>
           <p className="text-gray-500 mb-4">
-            {searchTerm ? "Try adjusting your search terms." : "Get started by creating your first post."}
+            {searchTerm ? "Try adjusting your search terms." : "Get started by creating your first Upload."}
           </p>
         </div>
       ) : (
@@ -98,8 +75,8 @@ export function PostsGrid({ posts }: PostsGridProps) {
             viewMode === "grid" ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" : "flex flex-col gap-4"
           }
         >
-          {filteredPosts.map((post) => (
-            <PostCard key={post.id} post={post} viewMode={viewMode} />
+          {filteredUploads.map((upload) => (
+            <UploadCard key={upload.id} upload={upload}  viewMode={viewMode} />
           ))}
         </div>
       )}

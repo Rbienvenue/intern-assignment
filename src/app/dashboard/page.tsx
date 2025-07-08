@@ -1,40 +1,39 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { BarChart3, FileText, ImageIcon, Users } from "lucide-react"
-
+import prisma from "@/lib/db"
 
 
 export default async function DashboardPage() {
 
+    const users = await prisma.users.count()
+    const posts = await prisma.posts.count()
+    const uploads = await prisma.uploads.count()
+
   const statCards = [
     {
       title: "Total Posts",
-      value: 'default',
+      value: posts,
       icon: FileText,
       color: "text-blue-600",
       bgColor: "bg-blue-50",
     },
     {
-      title: "Total Pages",
-      value: 'default',
-      icon: BarChart3,
-      color: "text-green-600",
-      bgColor: "bg-green-50",
-    },
-    {
       title: "Media Files",
-      value: 'default',
+      value: uploads,
       icon: ImageIcon,
       color: "text-purple-600",
       bgColor: "bg-purple-50",
     },
     {
       title: "Admin Users",
-      value: 'default',
+      value: users,
       icon: Users,
       color: "text-orange-600",
       bgColor: "bg-orange-50",
     },
   ]
+
+  
 
   return (
     <div className="space-y-6">
@@ -43,7 +42,7 @@ export default async function DashboardPage() {
         <p className="text-gray-600">Welcome to your admin dashboard</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {statCards.map((stat) => (
           <Card key={stat.title}>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -97,12 +96,12 @@ export default async function DashboardPage() {
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-2 gap-4">
-              <a href="/dashboard/posts/new" className="p-4 border rounded-lg hover:bg-gray-50 transition-colors">
+              <a href="/dashboard/posts" className="p-4 border rounded-lg hover:bg-gray-50 transition-colors">
                 <FileText className="h-6 w-6 text-blue-600 mb-2" />
                 <p className="font-medium">New Post</p>
                 <p className="text-xs text-gray-500">Create a new blog post</p>
               </a>
-              <a href="/dashboard/upload" className="p-4 border rounded-lg hover:bg-gray-50 transition-colors">
+              <a href="/dashboard/uploads" className="p-4 border rounded-lg hover:bg-gray-50 transition-colors">
                 <ImageIcon className="h-6 w-6 text-green-600 mb-2" />
                 <p className="font-medium">Upload Media</p>
                 <p className="text-xs text-gray-500">Add new images or files</p>

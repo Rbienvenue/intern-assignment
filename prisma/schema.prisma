@@ -22,6 +22,7 @@ model Users{
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   posts Posts[]
+  uploads Uploads[]
 }
 
 model Posts{
@@ -33,4 +34,15 @@ model Posts{
   updatedAt DateTime @updatedAt
   authorId String
   author Users @relation(fields: [authorId],references: [id])
+}
+
+model Uploads{
+  id String @id @default(uuid())
+  file String
+  title String
+  ownerId String
+  owner Users @relation(fields: [ownerId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  type String
 }

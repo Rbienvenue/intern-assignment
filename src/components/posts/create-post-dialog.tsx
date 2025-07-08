@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { toast } from "sonner" 
+import { toast } from "sonner"
 import {
   Dialog,
   DialogContent,
@@ -21,6 +21,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { ImageIcon } from "lucide-react"
 import { NextResponse } from "next/server"
+import { useRouter } from "next/navigation"
 
 interface Author {
   id: string
@@ -33,7 +34,9 @@ interface CreatePostDialogProps {
   children: React.ReactNode
 }
 
-export function CreatePostDialog({children }: CreatePostDialogProps) {
+export function CreatePostDialog({ children }: CreatePostDialogProps) {
+
+  const router = useRouter()
   const [open, setOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState("")
@@ -44,18 +47,19 @@ export function CreatePostDialog({children }: CreatePostDialogProps) {
     event.preventDefault()
     const formdata = new FormData(event.target)
     const res = await fetch('/api/posts', {
-        method: 'POST',
-        body: formdata
+      method: 'POST',
+      body: formdata
     })
 
-    if(!res.ok){
-        toast.error('Post not created!')
-        setIsLoading(false)
-        return
+    if (!res.ok) {
+      toast.error('Post not created!')
+      setIsLoading(false)
+      return
     }
     toast.info('post created successfully')
     setIsLoading(false)
     setOpen(false)
+    router.refresh()
   }
 
   return (
