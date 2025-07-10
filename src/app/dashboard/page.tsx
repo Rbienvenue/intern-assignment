@@ -1,7 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { BarChart3, FileText, ImageIcon, Users } from "lucide-react"
 import prisma from "@/lib/db"
-
+import { Progress } from "@/components/ui/progress"
+import { TrendingUp, Clock, Eye, Activity, Bell, Star } from 'lucide-react'
 
 export default async function DashboardPage() {
 
@@ -57,6 +58,57 @@ export default async function DashboardPage() {
           </Card>
         ))}
       </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+  {/* Recent Activity */}
+  <Card className="lg:col-span-2">
+    <CardHeader>
+      <CardTitle className="flex items-center gap-2">
+        <Activity className="h-5 w-5" />
+        Recent Activity
+      </CardTitle>
+    </CardHeader>
+    <CardContent>
+      <div className="space-y-4">
+        <div className="flex items-center space-x-4 p-3 rounded-lg hover:bg-gray-50 transition-colors">
+          <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
+          <div className="flex-1 min-w-0">
+            <p className="text-sm font-medium text-gray-900">New post created</p>
+            <p className="text-xs text-gray-500">by John Doe</p>
+          </div>
+          <div className="flex items-center text-xs text-gray-400">
+            <Clock className="h-3 w-3 mr-1" />
+            2 hours ago
+          </div>
+        </div>
+        {/* Add more activity items as needed */}
+      </div>
+    </CardContent>
+  </Card>
+
+  {/* Storage Usage */}
+  <Card>
+    <CardHeader>
+      <CardTitle>Storage Usage</CardTitle>
+    </CardHeader>
+    <CardContent className="space-y-4">
+      <div>
+        <div className="flex justify-between text-sm mb-2">
+          <span>Images</span>
+          <span>2.4 GB</span>
+        </div>
+        <Progress value={75} className="h-2" />
+      </div>
+      <div>
+        <div className="flex justify-between text-sm mb-2">
+          <span>Documents</span>
+          <span>1.2 GB</span>
+        </div>
+        <Progress value={45} className="h-2" />
+      </div>
+    </CardContent>
+  </Card>
+</div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Card>

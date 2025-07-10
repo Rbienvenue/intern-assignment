@@ -1,5 +1,5 @@
 "use client"
-
+import { BarChart3, FileText, LogOut, Settings, Upload, Users, TrendingUp, MessageSquare, Tag } from 'lucide-react'
 import {
     Sidebar,
     SidebarContent,
@@ -12,7 +12,6 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { BarChart3, FileText, ImageIcon, Layout, LogOut, Settings, Upload, Users } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Button } from "@/components/ui/button"
@@ -20,26 +19,46 @@ import { useRouter } from "next/navigation"
 
 
 const menuItems = [
-    {
-        title: "Dashboard",
-        url: "/dashboard",
-        icon: BarChart3,
-    },
-    {
-        title: "Posts",
-        url: "/dashboard/posts",
-        icon: FileText,
-    },
-    {
-        title: "Uploads",
-        url: "/dashboard/uploads",
-        icon: Upload,
-    },
-    {
-        title: "Users",
-        url: "/dashboard/users",
-        icon: Users,
-    },
+  {
+    title: "Dashboard",
+    url: "/dashboard",
+    icon: BarChart3,
+  },
+  {
+    title: "Posts",
+    url: "/dashboard/posts",
+    icon: FileText,
+  },
+  {
+    title: "Uploads",
+    url: "/dashboard/uploads",
+    icon: Upload,
+  },
+  {
+    title: "Users",
+    url: "/dashboard/users",
+    icon: Users,
+  },
+  {
+    title: "Analytics",
+    url: "/dashboard/analytics",
+    icon: TrendingUp,
+  },
+  {
+    title: "Comments",
+    url: "/dashboard/comments",
+    icon: MessageSquare,
+  },
+  {
+    title: "Categories",
+    url: "/dashboard/categories",
+    icon: Tag,
+  },
+  {
+    title: "Settings",
+    url: "/dashboard/settings",
+    icon: Settings,
+  },
 ]
 
 export function AdminSidebar() {

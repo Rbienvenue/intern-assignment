@@ -4,6 +4,7 @@ import { PostsGrid } from "@/components/posts/post-grid"
 import { FileText, Plus, Eye, Calendar } from "lucide-react"
 import { CreatePostDialog } from "@/components/posts/create-post-dialog";
 import prisma from "@/lib/db";
+import { Badge } from "@/components/ui/badge"
 
 export default async function Posts() {
 
@@ -80,6 +81,38 @@ export default async function Posts() {
           <PostsGrid posts={posts}/>
         </CardContent>
       </Card>
+
+    <Card>
+  <CardHeader>
+    <CardTitle>Content Performance</CardTitle>
+  </CardHeader>
+  <CardContent>
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+        <div>
+          <p className="font-medium">Most Popular</p>
+          <p className="text-sm text-gray-600">Technology Posts</p>
+        </div>
+        <Badge variant="secondary">68%</Badge>
+      </div>
+      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+        <div>
+          <p className="font-medium">Avg. Read Time</p>
+          <p className="text-sm text-gray-600">4 min 32 sec</p>
+        </div>
+        <Badge variant="outline">+12%</Badge>
+      </div>
+      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+        <div>
+          <p className="font-medium">Engagement</p>
+          <p className="text-sm text-gray-600">Comments & shares</p>
+        </div>
+        <Badge variant="default">8.4%</Badge>
+      </div>
+    </div>
+  </CardContent>
+</Card>
+
     </div>
   )
 }
