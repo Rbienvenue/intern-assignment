@@ -4,12 +4,12 @@ import { UploadsGrid } from "@/components/uploads/upload-grid"
 import { FileText, Plus, Eye, Calendar, ImageIcon } from "lucide-react"
 import { CreateUploadDialog } from "@/components/uploads/create-upload-dialog";
 import prisma from "@/lib/db";
-import {Progress} from "@/components/ui/progress"
+import { Progress } from "@/components/ui/progress"
 export default async function Uploads() {
 
   const uploads = await prisma.uploads.findMany({
     include: {
-        owner: true
+      owner: true
     }
   })
   const totalUploads = uploads.length
@@ -77,35 +77,34 @@ export default async function Uploads() {
           <CardTitle>All uploads</CardTitle>
         </CardHeader>
         <CardContent>
-          <UploadsGrid uploads={uploads}/>
+          <UploadsGrid uploads={uploads} />
         </CardContent>
       </Card>
 
-    // Add after your existing stats grid:
-<Card>
-  <CardHeader>
-    <CardTitle>File Type Distribution</CardTitle>
-  </CardHeader>
-  <CardContent>
-    <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="p-2 bg-blue-50 rounded-lg">
-            <ImageIcon className="h-4 w-4 text-blue-600" />
+      <Card>
+        <CardHeader>
+          <CardTitle>File Type Distribution</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-blue-50 rounded-lg">
+                  <ImageIcon className="h-4 w-4 text-blue-600" />
+                </div>
+                <div>
+                  <p className="font-medium">Images</p>
+                  <p className="text-sm text-gray-600">{uploads.filter(u => u.type?.startsWith('image/')).length} files</p>
+                </div>
+              </div>
+              <div className="text-right">
+                <p className="font-medium">1.8 GB</p>
+                <Progress value={75} className="w-20 h-2 mt-1" />
+              </div>
+            </div>
           </div>
-          <div>
-            <p className="font-medium">Images</p>
-            <p className="text-sm text-gray-600">{uploads.filter(u => u.type?.startsWith('image/')).length} files</p>
-          </div>
-        </div>
-        <div className="text-right">
-          <p className="font-medium">1.8 GB</p>
-          <Progress value={75} className="w-20 h-2 mt-1" />
-        </div>
-      </div>
-    </div>
-  </CardContent>
-</Card>
+        </CardContent>
+      </Card>
 
     </div>
   )
