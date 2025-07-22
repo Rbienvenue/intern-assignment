@@ -13,13 +13,13 @@ export async function POST(req : NextRequest) {
         })
 
         if(!user){
-            return NextResponse.json({message: 'invalid email or password'}, {status: 400})
+            return NextResponse.json({message: 'invalid email'}, {status: 400})
         }
 
         const isValid =await bcrypt.compare(password, user.password)
 
         if(!isValid){
-            return NextResponse.json({message: 'invalid email or password'}, {status: 400})
+            return NextResponse.json({message: 'invalid password'}, {status: 400})
         }
 
         const token = jwt.sign({
