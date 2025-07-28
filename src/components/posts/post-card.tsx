@@ -18,6 +18,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
+import { EditPostDialog } from "./edit-post-dialog"
 
 interface Post {
   id: string
@@ -35,13 +36,6 @@ interface Post {
   }
 }
 
-interface Author {
-  id: string
-  firstName: string
-  lastName: string
-  email: string
-}
-
 interface PostCardProps {
   post: Post
   viewMode: "grid" | "list"
@@ -51,6 +45,7 @@ export function PostCard({ post, viewMode }: PostCardProps) {
   const router = useRouter()
   const [isDeleting, setIsDeleting] = useState(false)
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
+  const [showEditDialog, setShowEditDialog] = useState(false)
 
   const formatDate = (date: Date) => {
     return new Date(date).toLocaleDateString("en-US", {
@@ -89,7 +84,7 @@ export function PostCard({ post, viewMode }: PostCardProps) {
 
   const dropdownContent = (
     <DropdownMenuContent>
-      <DropdownMenuItem>
+      <DropdownMenuItem onClick={() => setShowEditDialog(true)}>
         <Edit className="h-4 w-4 mr-2" />
         Edit
       </DropdownMenuItem>
@@ -164,6 +159,7 @@ export function PostCard({ post, viewMode }: PostCardProps) {
           </CardContent>
         </Card>
         {deleteDialog}
+        <EditPostDialog post={post} open={showEditDialog} onOpenChange={setShowEditDialog} />
       </>
     )
   }
@@ -210,6 +206,7 @@ export function PostCard({ post, viewMode }: PostCardProps) {
         </CardContent>
       </Card>
       {deleteDialog}
+      <EditPostDialog post={post} open={showEditDialog} onOpenChange={setShowEditDialog} />
     </>
   )
 }
