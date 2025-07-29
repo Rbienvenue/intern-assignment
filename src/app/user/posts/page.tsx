@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { UserPostsGrid } from "@/components/user/user-posts-grid"
+import { UserPostsGrid } from "@/components/user/user-post-grid"
 import { FileText, Plus, Eye, Calendar } from "lucide-react"
 import prisma from "@/lib/db"
 import { auth } from "@/lib/auth"

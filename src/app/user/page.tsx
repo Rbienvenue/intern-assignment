@@ -1,274 +1,271 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { FileText, Heart, MessageSquare, Users, Eye } from "lucide-react"
-import prisma from "@/lib/db"
-import { getUser } from "@/lib/auth"
-import { redirect } from "next/navigation"
+"use client"
 
-export default async function UserDashboard() {
-  const user = await getUser()
-  if (!user) {
-    redirect("/login")
+import { WelcomeHero } from "@/components/user/welcome-hero"
+import { ActivityFeed } from "@/components/user/activity-feed"
+import { TrendingPosts } from "@/components/user/trending-posts"
+import { UserStatsWidget } from "@/components/user/user-stats-widgets"
+import { QuickActions } from "@/components/user/quick-actions"
+import { RecentActivity } from "@/components/user/recent-activity"
+
+// Mock data for demonstration
+const mockUser = {
+  id: "1",
+  firstName: "John",
+  lastName: "Doe",
+  email: "john.doe@example.com",
+  createdAt: new Date("2023-01-15"),
+}
+
+const mockUserPosts = [
+  {
+    id: "1",
+    title: "Getting Started with React and Next.js",
+    description: "A comprehensive guide to building modern web applications with React and Next.js framework.",
+    thumbnail: "/placeholder.svg?height=200&width=300",
+    createdAt: new Date("2024-01-20"),
+    published: true,
+    author: mockUser,
+    _count: { likes: 24, comments: 8 },
+  },
+  {
+    id: "2",
+    title: "10 Tips for Better UI/UX Design",
+    description: "Essential design principles that every developer should know to create better user experiences.",
+    thumbnail: "/placeholder.svg?height=200&width=300",
+    createdAt: new Date("2024-01-18"),
+    published: true,
+    author: mockUser,
+    _count: { likes: 18, comments: 5 },
+  },
+  {
+    id: "3",
+    title: "Building Responsive Layouts with Tailwind CSS",
+    description: "Learn how to create beautiful, responsive designs using Tailwind CSS utility classes.",
+    thumbnail: "/placeholder.svg?height=200&width=300",
+    createdAt: new Date("2024-01-15"),
+    published: true,
+    author: mockUser,
+    _count: { likes: 31, comments: 12 },
+  },
+]
+
+const mockRecentPosts = [
+  {
+    id: "4",
+    title: "The Future of Web Development in 2024",
+    description: "Exploring emerging trends and technologies that will shape web development in the coming year.",
+    thumbnail: "/placeholder.svg?height=200&width=300",
+    createdAt: new Date("2024-01-22"),
+    published: true,
+    author: {
+      id: "2",
+      firstName: "Sarah",
+      lastName: "Johnson",
+      email: "sarah@example.com",
+    },
+    _count: { likes: 45, comments: 23 },
+  },
+  {
+    id: "5",
+    title: "Mastering TypeScript for React Development",
+    description: "Advanced TypeScript patterns and best practices for React applications.",
+    thumbnail: "/placeholder.svg?height=200&width=300",
+    createdAt: new Date("2024-01-21"),
+    published: true,
+    author: {
+      id: "3",
+      firstName: "Mike",
+      lastName: "Chen",
+      email: "mike@example.com",
+    },
+    _count: { likes: 38, comments: 15 },
+  },
+  {
+    id: "6",
+    title: "Database Design Best Practices",
+    description: "Essential principles for designing scalable and efficient database schemas.",
+    thumbnail: "/placeholder.svg?height=200&width=300",
+    createdAt: new Date("2024-01-20"),
+    published: true,
+    author: {
+      id: "4",
+      firstName: "Emily",
+      lastName: "Davis",
+      email: "emily@example.com",
+    },
+    _count: { likes: 29, comments: 11 },
+  },
+  {
+    id: "7",
+    title: "API Security: Protecting Your Endpoints",
+    description: "Comprehensive guide to securing REST APIs and protecting against common vulnerabilities.",
+    thumbnail: "/placeholder.svg?height=200&width=300",
+    createdAt: new Date("2024-01-19"),
+    published: true,
+    author: {
+      id: "5",
+      firstName: "David",
+      lastName: "Wilson",
+      email: "david@example.com",
+    },
+    _count: { likes: 52, comments: 18 },
+  },
+  {
+    id: "8",
+    title: "Building Real-time Applications with WebSockets",
+    description: "Learn how to implement real-time features using WebSockets and modern frameworks.",
+    thumbnail: "/placeholder.svg?height=200&width=300",
+    createdAt: new Date("2024-01-18"),
+    published: true,
+    author: {
+      id: "6",
+      firstName: "Lisa",
+      lastName: "Anderson",
+      email: "lisa@example.com",
+    },
+    _count: { likes: 33, comments: 9 },
+  },
+]
+
+const mockTrendingPosts = [
+  {
+    id: "9",
+    title: "AI and Machine Learning in Web Development",
+    description: "How artificial intelligence is revolutionizing the way we build web applications.",
+    thumbnail: "/placeholder.svg?height=200&width=300",
+    createdAt: new Date("2024-01-21"),
+    author: {
+      id: "7",
+      firstName: "Alex",
+      lastName: "Thompson",
+      email: "alex@example.com",
+    },
+    _count: { likes: 89, comments: 34 },
+  },
+  {
+    id: "10",
+    title: "Serverless Architecture: Pros and Cons",
+    description: "A detailed analysis of serverless computing and when to use it in your projects.",
+    thumbnail: "/placeholder.svg?height=200&width=300",
+    createdAt: new Date("2024-01-20"),
+    author: {
+      id: "8",
+      firstName: "Rachel",
+      lastName: "Brown",
+      email: "rachel@example.com",
+    },
+    _count: { likes: 67, comments: 28 },
+  },
+  {
+    id: "11",
+    title: "GraphQL vs REST: Making the Right Choice",
+    description: "Comparing GraphQL and REST APIs to help you choose the best approach for your project.",
+    thumbnail: "/placeholder.svg?height=200&width=300",
+    createdAt: new Date("2024-01-19"),
+    author: {
+      id: "9",
+      firstName: "Tom",
+      lastName: "Garcia",
+      email: "tom@example.com",
+    },
+    _count: { likes: 56, comments: 22 },
+  },
+]
+
+const mockLikedPosts = [
+  {
+    id: "like1",
+    createdAt: new Date("2024-01-21"),
+    post: {
+      id: "4",
+      title: "The Future of Web Development in 2024",
+      author: {
+        firstName: "Sarah",
+        lastName: "Johnson",
+      },
+      _count: { likes: 45, comments: 23 },
+    },
+  },
+  {
+    id: "like2",
+    createdAt: new Date("2024-01-20"),
+    post: {
+      id: "9",
+      title: "AI and Machine Learning in Web Development",
+      author: {
+        firstName: "Alex",
+        lastName: "Thompson",
+      },
+      _count: { likes: 89, comments: 34 },
+    },
+  },
+]
+
+const mockRecentComments = [
+  {
+    id: "comment1",
+    content:
+      "Great article! This really helped me understand the concepts better. Looking forward to implementing these ideas in my next project.",
+    createdAt: new Date("2024-01-21"),
+    post: {
+      id: "4",
+      title: "The Future of Web Development in 2024",
+      author: {
+        firstName: "Sarah",
+        lastName: "Johnson",
+      },
+    },
+  },
+  {
+    id: "comment2",
+    content: "Thanks for sharing this comprehensive guide. The examples are very clear and easy to follow.",
+    createdAt: new Date("2024-01-20"),
+    post: {
+      id: "5",
+      title: "Mastering TypeScript for React Development",
+      author: {
+        firstName: "Mike",
+        lastName: "Chen",
+      },
+    },
+  },
+]
+
+export default function UserDashboard() {
+  // Calculate comprehensive stats from mock data
+  const stats = {
+    myPosts: mockUserPosts.length,
+    totalLikes: mockUserPosts.reduce((sum, post) => sum + post._count.likes, 0),
+    totalComments: mockUserPosts.reduce((sum, post) => sum + post._count.comments, 0),
+    totalViews: mockUserPosts.length * 150, // Mock data
+    likedPosts: mockLikedPosts.length,
+    commentsGiven: mockRecentComments.length,
   }
 
-  // Get user's posts
-  const userPosts = await prisma.posts.findMany({
-    where: { author_id: user.id },
-    include: {
-      _count: {
-        select: {
-          comments: true,
-          likes: true,
-        },
-      },
-    },
-    orderBy: { created_at: "desc" },
-    take: 5,
-  })
-
-  // Get recent community posts
-  const recentPosts = await prisma.posts.findMany({
-    where: {
-      status: "published",
-      NOT: { author_id: user.id },
-    },
-    include: {
-      author: {
-        select: { username: true },
-      },
-      _count: {
-        select: {
-          comments: true,
-          likes: true,
-        },
-      },
-    },
-    orderBy: { created_at: "desc" },
-    take: 10,
-  })
-
-  // Get user's liked posts
-  const likedPosts = await prisma.likes.findMany({
-    where: { user_id: user.id },
-    include: {
-      post: {
-        include: {
-          author: {
-            select: { username: true },
-          },
-        },
-      },
-    },
-    orderBy: { created_at: "desc" },
-    take: 5,
-  })
-
-  // Calculate stats
-  const totalPosts = userPosts.length
-  const totalLikes = userPosts.reduce((sum, post) => sum + post._count.likes, 0)
-  const totalComments = userPosts.reduce((sum, post) => sum + post._count.comments, 0)
-  const totalViews = userPosts.reduce((sum, post) => sum + (post.views || 0), 0)
-
   return (
-    <div className="space-y-6">
-      {/* Welcome Header */}
-      <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg p-6 text-white">
-        <h1 className="text-3xl font-bold mb-2">Welcome back, {user.username}!</h1>
-        <p className="text-blue-100">Here's what's happening in your community today.</p>
-      </div>
+    <div className="space-y-8">
+      {/* Welcome Hero Section */}
+      <WelcomeHero user={mockUser} stats={stats} />
 
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-        <Card className="hover:shadow-md transition-shadow">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">My Posts</CardTitle>
-            <FileText className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{totalPosts}</div>
-            <p className="text-xs text-muted-foreground">
-              {totalPosts > 0 ? `Avg ${Math.round(totalViews / totalPosts)} views` : "No posts yet"}
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card className="hover:shadow-md transition-shadow">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Likes</CardTitle>
-            <Heart className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{totalLikes}</div>
-            <p className="text-xs text-muted-foreground">
-              {totalPosts > 0 ? `Avg ${Math.round(totalLikes / totalPosts)} per post` : "Start posting!"}
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card className="hover:shadow-md transition-shadow">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Comments</CardTitle>
-            <MessageSquare className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{totalComments}</div>
-            <p className="text-xs text-muted-foreground">
-              {totalComments > 0 ? "Great engagement!" : "Encourage discussions"}
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card className="hover:shadow-md transition-shadow">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Profile Views</CardTitle>
-            <Eye className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{totalViews}</div>
-            <p className="text-xs text-muted-foreground">This month</p>
-          </CardContent>
-        </Card>
-
-        <Card className="hover:shadow-md transition-shadow">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Community</CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{recentPosts.length}</div>
-            <p className="text-xs text-muted-foreground">New posts today</p>
-          </CardContent>
-        </Card>
-      </div>
+      {/* Enhanced Stats Grid */}
+      <UserStatsWidget stats={stats} />
 
       {/* Main Content Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Recent Community Posts */}
-        <div className="lg:col-span-2">
-          <Card>
-            <CardHeader>
-              <CardTitle>Community Feed</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4 max-h-96 overflow-y-auto">
-                {recentPosts.length > 0 ? (
-                  recentPosts.map((post) => (
-                    <div
-                      key={post.id}
-                      className="border-b pb-4 last:border-b-0 hover:bg-gray-50 p-3 rounded-lg transition-colors"
-                    >
-                      <div className="flex items-start space-x-3">
-                        <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
-                          <span className="text-white text-sm font-medium">
-                            {post.author.username.charAt(0).toUpperCase()}
-                          </span>
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center space-x-2">
-                            <h4 className="text-sm font-medium text-gray-900 truncate">{post.title}</h4>
-                            <span className="text-xs text-gray-500">by {post.author.username}</span>
-                          </div>
-                          <p className="text-sm text-gray-600 mt-1 line-clamp-2">{post.content.substring(0, 100)}...</p>
-                          <div className="flex items-center space-x-4 mt-2 text-xs text-gray-500">
-                            <span className="flex items-center">
-                              <Heart className="h-3 w-3 mr-1" />
-                              {post._count.likes}
-                            </span>
-                            <span className="flex items-center">
-                              <MessageSquare className="h-3 w-3 mr-1" />
-                              {post._count.comments}
-                            </span>
-                            <span className="flex items-center">
-                              <Eye className="h-3 w-3 mr-1" />
-                              {post.views || 0}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                  <p className="text-gray-500 text-center py-8">No community posts yet.</p>
-                )}
-              </div>
-            </CardContent>
-          </Card>
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        {/* Main Feed - Takes 2 columns */}
+        <div className="lg:col-span-2 space-y-6">
+          <ActivityFeed posts={mockRecentPosts} />
         </div>
 
-        {/* Sidebar */}
+        {/* Right Sidebar - Takes 1 column */}
         <div className="space-y-6">
-          {/* My Recent Posts */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">My Recent Posts</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                {userPosts.length > 0 ? (
-                  userPosts.map((post) => (
-                    <div key={post.id} className="p-3 border rounded-lg hover:bg-gray-50 transition-colors">
-                      <h4 className="font-medium text-sm truncate">{post.title}</h4>
-                      <div className="flex items-center justify-between mt-2 text-xs text-gray-500">
-                        <span>{post.status}</span>
-                        <div className="flex items-center space-x-2">
-                          <span>❤️ {post._count.likes}</span>
-                          <span>💬 {post._count.comments}</span>
-                        </div>
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                  <p className="text-gray-500 text-sm">
-                    No posts yet.{" "}
-                    <a href="/user/posts/create" className="text-blue-600 hover:underline">
-                      Create your first post!
-                    </a>
-                  </p>
-                )}
-              </div>
-            </CardContent>
-          </Card>
+          <TrendingPosts posts={mockTrendingPosts} />
+          <QuickActions />
+        </div>
 
-          {/* Recently Liked Posts */}
-          {likedPosts.length > 0 && (
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Recently Liked</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  {likedPosts.map((like) => (
-                    <div key={like.id} className="p-3 border rounded-lg hover:bg-gray-50 transition-colors">
-                      <h4 className="font-medium text-sm truncate">{like.post.title}</h4>
-                      <p className="text-xs text-gray-500 mt-1">by {like.post.author.username}</p>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          )}
-
-          {/* Quick Actions */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">Quick Actions</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-2">
-                <a
-                  href="/user/posts/create"
-                  className="block w-full p-3 text-center bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-                >
-                  Create New Post
-                </a>
-                <a
-                  href="/user/posts"
-                  className="block w-full p-3 text-center border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
-                >
-                  Manage My Posts
-                </a>
-              </div>
-            </CardContent>
-          </Card>
+        {/* Left Sidebar - Takes 1 column */}
+        <div className="lg:order-first space-y-6">
+          <RecentActivity userPosts={mockUserPosts} likedPosts={mockLikedPosts} recentComments={mockRecentComments} />
         </div>
       </div>
     </div>
